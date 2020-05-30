@@ -1,0 +1,32 @@
+library(rio)
+
+linkData = "https://github.com/romelserg/Datagastopublico/raw/master/Data%20gasto%20publico%20AL%20y%20europa%20final%20xd.xlsx"
+
+midata = import(linkData)
+
+dim(midata)
+head(midata)
+
+midata = midata[-c(1,2,4)]
+
+midata[,]=lapply(midata[,], trimws, whitespace = "[\\h\\v]")
+
+midata[,c(2:11)] = replace(midata[,c(2:11)],
+                              midata[,c(2:11)] == "..", NA)
+
+str(midata)
+
+midata[,-(1)] = lapply(midata[,-c(1)], as.numeric)
+
+str(midata)
+
+names(midata) = c("pais", "2009","2010","2011","2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019")
+
+write.csv(midata, file="Data_gasto_publico.csv", row.names = F)
+
+
+
+
+
+
+
